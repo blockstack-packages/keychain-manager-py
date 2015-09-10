@@ -3,6 +3,7 @@ import traceback
 import unittest
 from test import test_support
 from keychain import PrivateKeychain, PublicKeychain
+from bitcoin import bip32_deserialize
 
 
 class BasicKeychainTest(unittest.TestCase):
@@ -78,19 +79,39 @@ class KeychainDescendantTest(unittest.TestCase):
 
 class KeychainDerivationTest(unittest.TestCase):
     def setUp(self):
+        self.chain_path = 'bd62885ec3f0e3838043115f4ce25eedd22cc86711803fb0c19601eeef185e39'
         self.public_key_hex = '032532502314356f83068bdbd283c86398d9ffd1308192474e6d3d6156eaf3d67f'
         self.private_key_hex = 'e4557e22988ab073d4c605c4548577a3c87019198e514346c26c3cff5d546f7e01'
         self.reference_public_keychain = 'xpub661MyMwAqRbcEYS8w7XLSVeEsBXy79zSzH1J8vCdxAZningWLdN3zgtU6SJRqgVDtiwxFwbqpq3DhkYnpKaV7ShnnpTQTmQbf1gBWB5yEhw'
+        self.reference_child_0_chaincode = 'y1N\x14\x1b\xbcZ\xfe;\x88\x96\xd4\xd8@(\xe8\xc3\xd6\x9fK\x1c\x04\xa6\t\xe6%\xadz\xefcB!'
+
+        self.private_key_hex_2 = '0e1f04e0c9154cd880b4df17357516736d53d4d1a9875ae40643b3197dfb738c'
+        self.public_key_hex_2 = '04ed34a7f541de185fdcbf8e1a9f169b6a9146b62b34172cbfce22c0667b58e795bc28b30b931713743260390da739584eca6729af0e8011be4e5e7fb42b13c4c9'
+        self.reference_public_keychain_2 = 'xpub661MyMwAqRbcGRo2t6rbB8RjcbCA55bys8RyMiFLP9MpKLiPLcFV31fr425sbjjk1TLckB8iJg2c2TzBtbJyfRD3KCeryLaQ27utc1yBUf9'
 
     def tearDown(self):
         pass
 
-    def test_derivation(self):
+    def test_derivation_from_raw_keys(self):
         public_keychain = PublicKeychain.from_public_key(self.public_key_hex)
         private_keychain = PrivateKeychain.from_private_key(self.private_key_hex)
         public_keychain_2 = private_keychain.public_keychain()
         self.assertEqual(str(public_keychain), str(public_keychain_2))
         self.assertEqual(str(public_keychain), self.reference_public_keychain)
+
+    def test_derivation_from_raw_uncompressed_keys(self):
+        public_keychain = PublicKeychain.from_public_key(self.public_key_hex_2, chain_path=self.chain_path)
+        private_keychain = PrivateKeychain.from_private_key(self.private_key_hex_2, chain_path=self.chain_path)
+        public_keychain_2 = private_keychain.public_keychain()
+        self.assertEqual(str(public_keychain), str(public_keychain_2))
+        self.assertEqual(str(public_keychain), self.reference_public_keychain_2)
+
+    def test_child_generation(self):
+        public_keychain = PublicKeychain.from_public_key(self.public_key_hex)
+        public_keychain_child = public_keychain.child(0)
+        keychain_parts = bip32_deserialize(str(public_keychain_child))
+        self.assertEqual(keychain_parts[4], self.reference_child_0_chaincode)
+
 
 def test_main():
     test_support.run_unittest(

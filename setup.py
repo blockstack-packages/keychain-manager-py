@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='keychain',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/blockstack/keychain-manager-python',
     license='MIT',
     author='Blockstack Developers',
