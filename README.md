@@ -33,6 +33,8 @@ xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF
 
 *Note: A public keychain is a BIP32 hierarchical determinstic extended public key.*
 
+#### Public Keychains from Private Keychains
+
 ```python
 >>> public_keychain = private_keychain.public_keychain()
 >>> print public_keychain
@@ -41,10 +43,25 @@ xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8Y
 >>> address = public_keychain.address()
 ```
 
+#### Public Keychains From Serialized Data
+
+```python
+>>> public_keychain = PublicKeychain("xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8")
+>>>
+```
+
+#### Public Keychains from Public Keys
+
 ```python
 >>> public_key = '032532502314356f83068bdbd283c86398d9ffd1308192474e6d3d6156eaf3d67f'
 >>> chain_path = '\x00'*32
 >>> public_keychain = PublicKeychain.from_public_key(public_key, chain_path)
+```
+
+You can also leave out the chain path like so:
+
+```python
+>>> public_keychain = PublicKeychain.from_public_key(public_key)
 ```
 
 ### Un-hardened Child Keychains
