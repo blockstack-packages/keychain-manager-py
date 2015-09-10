@@ -3,7 +3,7 @@ import traceback
 import unittest
 from test import test_support
 from keychain import PrivateKeychain, PublicKeychain
-from bitcoin import bip32_deserialize
+from bitcoin import bip32_deserialize, privkey_to_pubkey
 
 
 class BasicKeychainTest(unittest.TestCase):
@@ -54,7 +54,7 @@ class BasicKeychainTest(unittest.TestCase):
 
     def test_private_key(self):
         root_private_key = self.root_private_keychain.private_key()
-        self.assertTrue(len(root_private_key) == 64)
+        self.assertTrue(len(root_private_key) == 66)
 
     def test_address(self):
         address = self.root_private_keychain.public_keychain().address()
@@ -89,6 +89,8 @@ class KeychainDerivationTest(unittest.TestCase):
         self.public_key_hex_2 = '04ed34a7f541de185fdcbf8e1a9f169b6a9146b62b34172cbfce22c0667b58e795bc28b30b931713743260390da739584eca6729af0e8011be4e5e7fb42b13c4c9'
         self.reference_public_keychain_2 = 'xpub661MyMwAqRbcEYS8w7XLSVeEsBXy79zSzH1J8vCdxAZningWLdN3zgtU6TpWofxjzJQxPqLwhMi3YenYyEXtWUa55DzZZCyuZzjrrusaHDJ'
 
+        self.public_key_hex_3 = '047c7f6d1f71780ccd373a7d2a020a1aeb7d47639e86fe951f5ba23a9ca8d6f7cfb03ed7ca411b22fa5244b9998d27d9c7bf7f0603f1997d1c7b3dc5a9b342c554'
+
     def tearDown(self):
         pass
 
@@ -113,11 +115,38 @@ class KeychainDerivationTest(unittest.TestCase):
         self.assertEqual(keychain_parts[4], self.reference_child_0_chaincode)
 
 
+class HighVolumeKeyDerivationTest(unittest.TestCase):
+    def setUp(self):
+        self.public_key_hex = '032532502314356f83068bdbd283c86398d9ffd1308192474e6d3d6156eaf3d67f'
+        self.private_key_hex = 'e4557e22988ab073d4c605c4548577a3c87019198e514346c26c3cff5d546f7e01'
+
+    def tearDown(self):
+        pass
+
+    def test_high_volume_derivation(self):
+        number_of_keys = 10
+        public_keychain = PublicKeychain.from_public_key(self.public_key_hex)
+        private_keychain = PrivateKeychain.from_private_key(self.private_key_hex)
+        keypairs = []
+        print ""
+        for i in range(number_of_keys):
+            print "making key %i of %i" % (i+1, number_of_keys)
+            public_key = public_keychain.child(i).public_key()
+            private_key = private_keychain.child(i).private_key()
+            keypairs.append({ 'public': public_key, 'private': private_key })
+
+        for i in range(len(keypairs)):
+            keypair = keypairs[i]
+            print "checking key %i of %i" % (i+1, number_of_keys)
+            self.assertEqual(privkey_to_pubkey(keypair['private']), keypair['public'])
+
+
 def test_main():
     test_support.run_unittest(
         KeychainDerivationTest,
-        #BasicKeychainTest,
-        #KeychainDescendantTest
+        BasicKeychainTest,
+        KeychainDescendantTest,
+        HighVolumeKeyDerivationTest
     )
 
 

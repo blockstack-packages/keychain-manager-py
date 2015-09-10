@@ -38,8 +38,11 @@ class PrivateKeychain():
         public_keychain = self.hdkeychain.public_copy()
         return PublicKeychain(public_keychain)
 
-    def private_key(self):
-        return self.hdkeychain.get_private_key_hex()
+    def private_key(self, compressed=True):
+        private_key = self.hdkeychain.get_private_key_hex()
+        if compressed:
+            private_key += '01'
+        return private_key
 
     @classmethod
     def from_private_key(cls, private_key, chain_path='\x00'*32, depth=0,
