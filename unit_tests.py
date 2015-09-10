@@ -76,8 +76,25 @@ class KeychainDescendantTest(unittest.TestCase):
         self.assertEqual(descendant_public_key, self.reference_public_key)
 
 
+class KeychainDerivationTest(unittest.TestCase):
+    def setUp(self):
+        self.public_key_hex = '032532502314356f83068bdbd283c86398d9ffd1308192474e6d3d6156eaf3d67f'
+        self.private_key_hex = 'e4557e22988ab073d4c605c4548577a3c87019198e514346c26c3cff5d546f7e01'
+        self.reference_public_keychain = 'xpub661MyMwAqRbcEYS8w7XLSVeEsBXy79zSzH1J8vCdxAZningWLdN3zgtU6SJRqgVDtiwxFwbqpq3DhkYnpKaV7ShnnpTQTmQbf1gBWB5yEhw'
+
+    def tearDown(self):
+        pass
+
+    def test_derivation(self):
+        public_keychain = PublicKeychain.from_public_key(self.public_key_hex)
+        private_keychain = PrivateKeychain.from_private_key(self.private_key_hex)
+        public_keychain_2 = private_keychain.public_keychain()
+        self.assertEqual(str(public_keychain), str(public_keychain_2))
+        self.assertEqual(str(public_keychain), self.reference_public_keychain)
+
 def test_main():
     test_support.run_unittest(
+        KeychainDerivationTest,
         BasicKeychainTest,
         KeychainDescendantTest
     )

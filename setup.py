@@ -18,7 +18,8 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     install_requires=[
-        'bitmerchant>=0.1.8'
+        'bitmerchant>=0.1.8',
+        'bitcoin==1.1.36'
     ],
     classifiers=[
         'Intended Audience :: Developers',

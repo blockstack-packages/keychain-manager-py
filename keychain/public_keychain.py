@@ -1,4 +1,6 @@
 from bitmerchant.wallet import Wallet as HDWallet
+from bitcoin import bip32_serialize
+from binascii import unhexlify
 
 
 class PublicKeychain():
@@ -38,3 +40,13 @@ class PublicKeychain():
 
     def address(self):
         return self.hdkeychain.to_address()
+
+    @classmethod
+    def from_public_key(self, public_key_hex, depth=0, fingerprint='\x00'*4,
+                        child_index=0, chain_path='\x00'*32):
+        public_key_bytes = unhexlify(public_key_hex)
+        version_bytes = '\x04\x88\xb2\x1e' # spells out 'xpub'
+        keychain_parts = (version_bytes, depth, fingerprint,
+                          child_index, chain_path, public_key_bytes)
+        public_keychain_string = bip32_serialize(keychain_parts)
+        return PublicKeychain(public_keychain_string)

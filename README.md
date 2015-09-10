@@ -20,6 +20,8 @@ pip install keychain
 
 ### Private Keychains
 
+*Note: A private keychain is a BIP32 hierarchical determinstic extended private key.*
+
 ```python
 >>> private_keychain = PrivateKeychain("xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi")
 >>> print private_keychain
@@ -29,6 +31,8 @@ xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF
 
 ### Public Keychains
 
+*Note: A public keychain is a BIP32 hierarchical determinstic extended public key.*
+
 ```
 >>> public_keychain = private_keychain.public_keychain()
 >>> print public_keychain
@@ -37,21 +41,33 @@ xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8Y
 >>> address = public_keychain.address()
 ```
 
-### Hardened Private Child Keychains
+### Un-hardened Child Keychains
+
+Un-hardened keychains use the public key as a seed to derive the child. This means that you can derive the parent public keychain of a given public keychain that was derived in an un-hardened way.
+
+#### Private Un-hardened Child Keychains
 
 ```python
->>> private_child_keychain_0H = private_keychain.hardened_child(0)
+>>> private_child = private_keychain.hardened_child(0).child(1)
 ```
 
-### Un-hardened Private Child Keychains
+#### Public Un-hardened Child Keychains
 
 ```python
->>> private_child_keychain_0H_1 = private_keychain.hardened_child(0).child(1)
+>>> public_child = private_child.public_keychain(0)
+>>> public_grandchild = public_child.child(1)
 ```
 
-### Un-hardened Public Child Keychains
+### Hardened Child Keychains
+
+Hardened keychains use the private key as a seed to derive the child. This means that with a public keychain derived from a hardened private keychain, you can't derive the parent public keychain, as is the case with the un-hardened counterparts.
+
+#### Private Hardened Child Keychains
 
 ```python
->>> public_child_keychain_0H = private_child_keychain_0H.public_keychain(0)
->>> public_child_keychian_0H_1 = public_child_keychain_0H.child(1)
+>>> private_hardened_child = private_keychain.hardened_child(0)
 ```
+
+#### Public Hardened Child Keychains
+
+*Note: these do not exist, as a private key is required to harden a child.*
