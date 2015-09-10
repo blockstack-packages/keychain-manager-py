@@ -5,7 +5,7 @@ from test import test_support
 from keychain import PrivateKeychain, PublicKeychain
 
 
-class KeychainTest(unittest.TestCase):
+class BasicKeychainTest(unittest.TestCase):
     def setUp(self):
         self.private_keychains = {
             "root": "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi",
@@ -51,10 +51,35 @@ class KeychainTest(unittest.TestCase):
         public_keychain = private_keychain.public_keychain()
         self.assertEqual(str(public_keychain), str(self.public_keychains["0H/1/2H/2/1000000000"]))
 
+    def test_private_key(self):
+        root_private_key = self.root_private_keychain.private_key()
+        self.assertTrue(len(root_private_key) == 64)
+
+    def test_address(self):
+        address = self.root_private_keychain.public_keychain().address()
+        self.assertTrue(address[0] == '1')
+
+
+class KeychainDescendantTest(unittest.TestCase):
+    def setUp(self):
+        self.public_keychain_string = 'xpub661MyMwAqRbcFQVrQr4Q4kPjaP4JjWaf39fBVKjPdK6oGBayE46GAmKzo5UDPQdLSM9DufZiP8eauy56XNuHicBySvZp7J5wsyQVpi2axzZ'
+        self.public_keychain = PublicKeychain(self.public_keychain_string)
+        self.chain_path = 'bd62885ec3f0e3838043115f4ce25eedd22cc86711803fb0c19601eeef185e39'
+        self.reference_public_key = '03fdd57adec3d438ea237fe46b33ee1e016eda6b585c3e27ea66686c2ea5358479'
+
+    def tearDown(self):
+        pass
+
+    def test_descendant(self):
+        descendant_public_keychain = self.public_keychain.descendant(self.chain_path)
+        descendant_public_key = descendant_public_keychain.public_key()
+        self.assertEqual(descendant_public_key, self.reference_public_key)
+
 
 def test_main():
     test_support.run_unittest(
-        KeychainTest
+        BasicKeychainTest,
+        KeychainDescendantTest
     )
 
 

@@ -1,4 +1,6 @@
-# keychain-manager-python
+# Keychain Manager
+
+A key system (implemented in python) based around hierarchical deterministic (HD / BIP32) public and private keychains, each with ECDSA keypairs and the ability to generate child keys (the ones Bitcoin uses).
 
 ### Private Keychains
 
@@ -6,6 +8,7 @@
 >>> private_keychain = PrivateKeychain("xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi")
 >>> print private_keychain
 xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi
+>>> private_key = private_keychain.private_key()
 ```
 
 ### Public Keychains
@@ -14,6 +17,8 @@ xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF
 >>> public_keychain = private_keychain.public_keychain()
 >>> print public_keychain
 xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8
+>>> public_key = public_keychain.public_key()
+>>> address = public_keychain.address()
 ```
 
 ### Hardened Private Child Keychains
