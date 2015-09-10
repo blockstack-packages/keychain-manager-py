@@ -1,4 +1,4 @@
-# Hierarchical Deterministic Keychain
+# Keychain Manager
 
 [![CircleCI](https://img.shields.io/circleci/project/blockstack/HD-keychain-python.svg)](https://pypi.python.org/pypi/HD-keychain-python/)
 [![PyPI](https://img.shields.io/pypi/v/keychain.svg)](https://pypi.python.org/pypi/keychain/)
