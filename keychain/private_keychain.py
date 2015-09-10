@@ -42,8 +42,8 @@ class PrivateKeychain():
         return self.hdkeychain.get_private_key_hex()
 
     @classmethod
-    def from_private_key(self, private_key, depth=0, fingerprint='\x00'*4,
-                         child_index=0, chain_path='\x00'*32):
+    def from_private_key(cls, private_key, chain_path='\x00'*32, depth=0,
+                         fingerprint='\x00'*4, child_index=0):
         private_key_bytes = encode_private_key(private_key, 'bin_compressed')
         chain_path = extract_bin_chain_path(chain_path)
         keychain_parts = (version_bytes, depth, fingerprint,

@@ -49,8 +49,8 @@ class PublicKeychain():
         return self.hdkeychain.to_address()
 
     @classmethod
-    def from_public_key(self, public_key, depth=0, fingerprint='\x00'*4,
-                        child_index=0, chain_path='\x00'*32):
+    def from_public_key(cls, public_key, chain_path='\x00'*32, depth=0,
+                        fingerprint='\x00'*4, child_index=0):
         public_key_bytes = encode_public_key(public_key, 'bin_compressed')
         chain_path = extract_bin_chain_path(chain_path)
         keychain_parts = (version_bytes, depth, fingerprint,
