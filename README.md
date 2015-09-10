@@ -2,6 +2,16 @@
 
 A key system (implemented in python) based around hierarchical deterministic (HD / BIP32) public and private keychains, each with ECDSA keypairs and the ability to generate child keys (the ones Bitcoin uses).
 
+### Getting Started
+
+```
+pip install keychain
+```
+
+```python
+>>> from keychain import PrivateKeychain, PublicKeychain
+```
+
 ### Private Keychains
 
 ```python
