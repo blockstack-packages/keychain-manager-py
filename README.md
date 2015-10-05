@@ -1,6 +1,6 @@
 # Keychain Manager
 
-[![CircleCI](https://img.shields.io/circleci/project/blockstack/HD-keychain-python.svg)](https://pypi.python.org/pypi/HD-keychain-python/)
+[![CircleCI](https://img.shields.io/circleci/project/blockstack/keychain-manager-py.svg)](https://pypi.python.org/pypi/keychain/)
 [![PyPI](https://img.shields.io/pypi/v/keychain.svg)](https://pypi.python.org/pypi/keychain/)
 [![PyPI](https://img.shields.io/pypi/dm/keychain.svg)](https://pypi.python.org/pypi/keychain/)
 [![PyPI](https://img.shields.io/pypi/l/keychain.svg)](https://pypi.python.org/pypi/keychain/)
