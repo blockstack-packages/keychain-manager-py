@@ -8,8 +8,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='keychain',
-    version='0.1.3',
-    url='https://github.com/blockstack/keychain-manager-python',
+    version='0.1.4',
+    url='https://github.com/blockstack/keychain-manager-py',
     license='MIT',
     author='Blockstack Developers',
     author_email='hello@onename.com',
@@ -19,7 +19,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'bitmerchant>=0.1.8',
-        'bitcoin==1.1.36'
+        'bitcoin>=1.1.39'
     ],
     classifiers=[
         'Intended Audience :: Developers',
