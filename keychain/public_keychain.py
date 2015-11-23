@@ -46,7 +46,7 @@ class PublicKeychain():
         return self.hdkeychain.get_public_key_hex(compressed=compressed)
 
     def address(self):
-        return self.hdkeychain.to_address()
+        return str(self.hdkeychain.to_address())
 
     @classmethod
     def from_public_key(cls, public_key, chain_path='\x00'*32, depth=0,
