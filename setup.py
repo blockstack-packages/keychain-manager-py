@@ -19,7 +19,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'bitmerchant>=0.1.8',
-        'bitcoin>=1.1.39'
+        'bitcoin>=1.1.42'
     ],
     classifiers=[
         'Intended Audience :: Developers',
