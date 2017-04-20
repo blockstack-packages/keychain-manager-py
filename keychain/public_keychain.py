@@ -1,14 +1,12 @@
 from bitmerchant.wallet import (
     Wallet as HDWallet
 )
-from bitcoin import (
-    bip32_serialize,
-    encode_pubkey as encode_public_key
-)
 from binascii import hexlify, unhexlify
-from .utils import extract_bin_chain_path
+from .utils import extract_bin_chain_path, bip32_serialize
 from .configs import EXTENDED_PUBLIC_KEY_VERSION_BYTES as version_bytes
 
+import keylib
+from keylib.key_formatting import encode_pubkey as encode_public_key
 
 class PublicKeychain():
     def __init__(self, public_keychain):

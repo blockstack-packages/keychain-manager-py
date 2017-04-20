@@ -1,13 +1,11 @@
 from bitmerchant.wallet import Wallet as HDWallet
 from .public_keychain import PublicKeychain
 from binascii import unhexlify, hexlify
-from bitcoin import (
-    bip32_serialize,
-    encode_privkey as encode_private_key
-)
-from .utils import extract_bin_chain_path
+from .utils import extract_bin_chain_path, bip32_serialize
 from .configs import EXTENDED_PRIVATE_KEY_VERSION_BYTES as version_bytes
 
+import keylib
+from keylib.key_formatting import encode_privkey as encode_private_key
 
 class PrivateKeychain():
     def __init__(self, private_keychain=None):
