@@ -3,8 +3,8 @@ import traceback
 import unittest
 from test import test_support
 from keychain import PrivateKeychain, PublicKeychain
-from bitcoin import bip32_deserialize, privkey_to_pubkey
-
+from keychain.utils import bip32_deserialize
+import keylib
 
 class BasicKeychainTest(unittest.TestCase):
     def setUp(self):
@@ -138,7 +138,8 @@ class HighVolumeKeyDerivationTest(unittest.TestCase):
         for i in range(len(keypairs)):
             keypair = keypairs[i]
             print "checking key %i of %i" % (i+1, number_of_keys)
-            self.assertEqual(privkey_to_pubkey(keypair['private']), keypair['public'])
+            # self.assertEqual(privkey_to_pubkey(keypair['private']), keypair['public'])
+            self.assertEqual(keylib.ECPrivateKey(keypair['private']).public_key().to_hex(), keylib.ECPublicKey(keypair['public']).to_hex())
 
 
 def test_main():
